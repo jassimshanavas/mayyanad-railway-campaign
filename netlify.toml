@@ -1,0 +1,9 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Local dev server settings
+[dev]
+  command = "npx netlify-cli dev"
+  port = 8888
+  targetPort = 8080

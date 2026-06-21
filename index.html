@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mayyanad Railway Passengers' Association</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#081530;
+    --navy:#102a52;
+    --navy-soft:#1c3a68;
+    --paper:#f2ecd9;
+    --paper-line:#dcd2af;
+    --board-yellow:#ffc72c;
+    --board-yellow-deep:#d99e00;
+    --alert-red:#c8443c;
+    --ink:#15233f;
+    --mist:#aebcd6;
+    --mist-dim:#7e8fb3;
+    --green:#3f8f5f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--navy-deep);
+    color:var(--paper);
+    font-family:'Source Sans 3',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+  section{padding:64px 0;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse at top right, rgba(255,199,44,0.10), transparent 55%),
+      linear-gradient(180deg, var(--navy-deep), var(--navy) 70%);
+    padding:56px 0 72px;
+    border-bottom:1px solid rgba(255,199,44,0.18);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    color:var(--mist-dim);
+    text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .nameboard{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    background:var(--board-yellow);
+    color:#1a1200;
+    border:3px solid #1a1200;
+    border-radius:4px;
+    padding:10px 18px;
+    box-shadow:0 6px 0 #8a6300, 0 10px 18px rgba(0,0,0,0.35);
+    margin-bottom:22px;
+  }
+  .nameboard .code{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:13px;
+    background:#1a1200;
+    color:var(--board-yellow);
+    padding:3px 8px;
+    border-radius:2px;
+  }
+  .nameboard .names{display:flex; flex-direction:column; line-height:1.1;}
+  .nameboard .en{font-family:'Oswald',sans-serif; font-weight:700; font-size:19px; letter-spacing:0.04em;}
+  .nameboard .ml{font-size:13px; font-weight:600; opacity:0.85;}
+
+  .hero h1{
+    font-size:clamp(32px,5vw,52px);
+    font-weight:600;
+    color:#fff;
+    max-width:14ch;
+    line-height:1.08;
+    margin-bottom:18px;
+  }
+  .hero h1 span{color:var(--board-yellow);}
+  .hero .sub{
+    color:var(--mist);
+    font-size:17px;
+    max-width:56ch;
+    margin-bottom:8px;
+  }
+  .hero .by{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--mist-dim);
+    margin-bottom:36px;
+  }
+
+  .cta-row{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:46px;}
+  .btn{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    font-size:14px;
+    font-weight:600;
+    padding:14px 26px;
+    border-radius:3px;
+    border:2px solid transparent;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    transition:transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{
+    background:var(--board-yellow);
+    color:#1a1200;
+    box-shadow:0 4px 0 var(--board-yellow-deep);
+  }
+  .btn-primary:hover{box-shadow:0 5px 0 var(--board-yellow-deep); transform:translateY(-1px);}
+  .btn-ghost{
+    background:transparent;
+    border-color:rgba(255,255,255,0.35);
+    color:#fff;
+  }
+  .btn-ghost:hover{border-color:#fff;}
+  .btn:disabled{opacity:0.7; cursor:default;}
+
+  /* split flap board */
+  .board{
+    background:var(--navy-deep);
+    border:1px solid rgba(255,199,44,0.25);
+    border-radius:6px;
+    padding:20px 22px;
+    max-width:560px;
+  }
+  .board-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    color:var(--mist-dim);
+    text-transform:uppercase;
+    margin-bottom:12px;
+    border-bottom:1px dashed rgba(255,255,255,0.15);
+    padding-bottom:10px;
+  }
+  .board-row{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    min-height:46px;
+    overflow:hidden;
+  }
+  .flap{
+    font-family:'JetBrains Mono',monospace;
+    font-size:26px;
+    font-weight:700;
+    color:var(--board-yellow);
+    letter-spacing:0.02em;
+    transition:opacity 0.25s ease, transform 0.25s ease;
+  }
+  .flap-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--mist-dim);
+  }
+  .flap.swap{opacity:0; transform:translateY(6px);}
+
+  .supporter-strip{
+    margin-top:28px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--mist);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .supporter-strip strong{color:var(--board-yellow); font-size:16px;}
+
+  /* ---------- PROBLEM SECTION ---------- */
+  .section-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--board-yellow);
+    margin-bottom:10px;
+  }
+  .section-title{
+    font-size:clamp(24px,3.4vw,34px);
+    color:#fff;
+    margin-bottom:14px;
+    max-width:22ch;
+  }
+  .section-intro{
+    color:var(--mist);
+    max-width:62ch;
+    margin-bottom:36px;
+    font-size:16px;
+  }
+
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:14px;
+    margin-bottom:36px;
+  }
+  .stat-card{
+    background:var(--paper);
+    color:var(--ink);
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:20px 18px;
+  }
+  .stat-card .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:32px;
+    font-weight:700;
+    color:var(--alert-red);
+    line-height:1;
+    margin-bottom:8px;
+  }
+  .stat-card .lbl{
+    font-size:13px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:#4a5876;
+  }
+
+  .compare-table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  .compare-table th, .compare-table td{
+    padding:13px 16px;
+    text-align:left;
+    border-bottom:1px solid var(--paper-line);
+  }
+  .compare-table th{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:#4a5876;
+    background:#e9e0c4;
+  }
+  .compare-table td.num{font-family:'JetBrains Mono',monospace; font-weight:600;}
+  .compare-table tr:last-child td{border-bottom:none;}
+
+  /* ---------- IMPACT ---------- */
+  .impact-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:start;
+  }
+  @media (max-width:720px){ .impact-grid{grid-template-columns:1fr;} }
+  .impact-grid p{color:var(--mist); font-size:16px; margin:0 0 16px;}
+  .impact-card{
+    background:var(--navy-soft);
+    border:1px solid rgba(255,199,44,0.2);
+    border-radius:6px;
+    padding:26px;
+  }
+  .impact-card .big{
+    font-family:'JetBrains Mono',monospace;
+    font-size:38px;
+    font-weight:700;
+    color:var(--board-yellow);
+    margin-bottom:4px;
+  }
+  .impact-card .cap{font-size:13px; color:var(--mist-dim); text-transform:uppercase; letter-spacing:0.04em;}
+  .impact-list{list-style:none; margin:20px 0 0; padding:0; display:grid; gap:10px;}
+  .impact-list li{
+    font-size:14px;
+    color:var(--mist);
+    padding-left:18px;
+    position:relative;
+  }
+  .impact-list li::before{
+    content:'';
+    position:absolute; left:0; top:7px;
+    width:7px; height:7px;
+    background:var(--alert-red);
+    border-radius:50%;
+  }
+
+  /* ---------- SOLUTIONS ---------- */
+  .solutions{display:grid; gap:16px;}
+  .sol-card{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    border:1px solid var(--paper-line);
+    display:grid;
+    grid-template-columns:64px 1fr;
+    overflow:hidden;
+  }
+  .sol-num{
+    background:var(--navy);
+    color:var(--board-yellow);
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .sol-body{padding:20px 22px;}
+  .sol-route{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:#5a6789;
+    margin-bottom:6px;
+  }
+  .sol-title{font-family:'Oswald',sans-serif; font-size:19px; font-weight:600; margin-bottom:8px;}
+  .sol-desc{font-size:14.5px; color:#384566; max-width:64ch;}
+  .sol-benefit{
+    display:inline-block;
+    margin-top:10px;
+    font-size:12.5px;
+    font-weight:600;
+    color:#2a6b45;
+    background:#e1eee3;
+    padding:4px 10px;
+    border-radius:3px;
+  }
+  .sol-stat{
+    display:inline-block;
+    margin-top:10px;
+    font-size:12.5px;
+    font-weight:600;
+    color:#8c6d11;
+    background:#fdf2d0;
+    padding:4px 10px;
+    border-radius:3px;
+    margin-left:6px;
+  }
+  .sol-stat-blue{
+    display:inline-block;
+    margin-top:10px;
+    font-size:12.5px;
+    font-weight:600;
+    color:#154a7a;
+    background:#e1effa;
+    padding:4px 10px;
+    border-radius:3px;
+    margin-left:6px;
+  }
+
+  /* ---------- SIGN UP ---------- */
+  .signup{
+    background:linear-gradient(135deg, var(--navy-soft), var(--navy));
+    border:1px solid rgba(255,199,44,0.3);
+    border-radius:8px;
+    padding:42px;
+  }
+  @media (max-width:600px){ .signup{padding:28px 22px;} }
+  .signup h2{color:#fff; font-size:clamp(22px,3vw,30px); margin-bottom:12px; max-width:20ch;}
+  .signup p{color:var(--mist); max-width:58ch; margin-bottom:24px; font-size:15.5px;}
+  .signup-actions{display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:22px;}
+  .privacy-note{
+    font-size:12.5px;
+    color:var(--mist-dim);
+    border-top:1px dashed rgba(255,255,255,0.18);
+    padding-top:16px;
+    max-width:62ch;
+  }
+  .quick-support{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:18px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--mist-dim);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid rgba(255,199,44,0.15);
+    padding:34px 0 50px;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:18px;
+    font-size:13px;
+    color:var(--mist-dim);
+  }
+  footer .assoc{font-family:'Oswald',sans-serif; color:var(--mist); letter-spacing:0.03em; text-transform:uppercase; font-size:14px;}
+  footer .src{max-width:46ch; line-height:1.5;}
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">PUBLIC REPRESENTATION CAMPAIGN &middot; KOLLAM, KERALA</div>
+
+      <div class="nameboard">
+        <span class="code">MYY</span>
+        <span class="names">
+          <span class="en">MAYYANAD</span>
+          <span class="ml">മയ്യനാട്</span>
+        </span>
+      </div>
+
+      <h1>One ride home<br>shouldn't take <span>three hours.</span></h1>
+      <p class="sub">We're a group of daily commuters between Mayyanad and Kazhakuttam, organising to request additional train stoppages from Southern Railway and the Ministry of Railways &mdash; backed by real running-time data, not just complaints.</p>
+      <div class="by">ORGANISED BY MAYYANAD RAILWAY PASSENGERS' ASSOCIATION</div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" id="petitionLink" href="https://forms.gle/REPLACE-WITH-YOUR-GOOGLE-FORM-LINK" target="_blank" rel="noopener">Sign the Petition &rarr;</a>
+        <button class="btn btn-ghost" id="quickSupportBtn">I Support This</button>
+      </div>
+
+      <div class="board">
+        <div class="board-head">
+          <span>56304 &middot; TVC&ndash;QLN PASSENGER</span>
+          <span>AT MAYYANAD (MYY)</span>
+        </div>
+        <div class="board-row">
+          <span class="flap-label">STATUS&gt;</span>
+          <span class="flap" id="flapText">23% ON TIME</span>
+        </div>
+      </div>
+
+      <div class="supporter-strip">
+        <span id="supporterLoading">Loading supporter count&hellip;</span>
+        <span id="supporterShown" style="display:none;"><strong id="supporterCount">0</strong> commuters have shown support so far</span>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">The only practical evening train rarely keeps its schedule</h2>
+      <p class="section-intro">Train 56304 (TVC&ndash;QLN Passenger) is scheduled into Mayyanad at 7:23&nbsp;PM &mdash; the main evening return option for Technopark employees. Here's how it's actually performed, based on official running status data compiled through February&nbsp;2026.</p>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num">36%</div><div class="lbl">On-time, last 6 months</div></div>
+        <div class="stat-card"><div class="num">20&ndash;27 min</div><div class="lbl">Average delay</div></div>
+        <div class="stat-card"><div class="num">68 min</div><div class="lbl">Worst recorded delay</div></div>
+        <div class="stat-card"><div class="num">~4,950</div><div class="lbl">Man-hours lost monthly*</div></div>
+      </div>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>Period</th><th>On-Time (0&ndash;15 min)</th><th>Slight Delay (15&ndash;60 min)</th><th>Avg Delay</th><th>Max Delay</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>This Month</td><td class="num">23.33% (7/30)</td><td class="num">76.67% (23/30)</td><td class="num">27 min</td><td class="num">60 min</td></tr>
+          <tr><td>Last 3 Months</td><td class="num">27.78% (25/90)</td><td class="num">72.22% (65/90)</td><td class="num">23 min</td><td class="num">60 min</td></tr>
+          <tr><td>Last 6 Months</td><td class="num">36.11% (65/180)</td><td class="num">63.33% (114/180)</td><td class="num">20 min</td><td class="num">68 min</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:20px; text-align:right;">
+        <a href="delay_report.md" style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--board-yellow); text-decoration:underline;">View Full Punctuality Report for All Trains &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="impact-grid">
+        <div>
+          <div class="section-label">Who This Affects</div>
+          <h2 class="section-title" style="color:#fff;">Hundreds of working families, every single evening</h2>
+          <p>Most employees finish work at Kazhakuttam around 5:30&nbsp;PM. With no earlier stoppage and a train that's late more often than not, commuters routinely reach home at or after 8:00&nbsp;PM &mdash; turning a short hop into a near three-hour ordeal.</p>
+          <ul class="impact-list">
+            <li>Reduced productivity the next working day</li>
+            <li>Less time with family, especially for parents of young children</li>
+            <li>Physical fatigue from consistently long travel days</li>
+            <li>No real alternative: road routes via Paravur involve a 10&ndash;16&nbsp;km detour with no direct bus link</li>
+          </ul>
+        </div>
+        <div class="impact-card">
+          <div class="big">150+</div>
+          <div class="cap">Estimated regular daily commuters</div>
+          <div class="big" style="margin-top:18px;">1.5 hrs</div>
+          <div class="cap">Average daily time lost, per commuter</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-label">The Ask</div>
+      <h2 class="section-title" style="color:#fff;">Three concrete, operationally feasible stoppages</h2>
+      <p class="section-intro">None of these require new trains or major timetable changes &mdash; just a one-minute halt added to services already running on this stretch.</p>
+
+      <div class="solutions">
+        <div class="sol-card">
+          <div class="sol-num">01</div>
+          <div class="sol-body">
+            <div class="sol-route">56706 CAPE&ndash;PUU PASSENGER &middot; Kanyakumari &rarr; Punalur (+ return 56705)</div>
+            <div class="sol-title">Stop at Mayyanad instead of only Paravur</div>
+            <div class="sol-desc">Paravur and Mayyanad are separated by Paravur Lake with no direct bus link, so the existing halt doesn't help. A Mayyanad stop would get commuters home by ~6:30&nbsp;PM (56706 avg. delay: 22m), and the morning return (56705) would reach Kazhakuttam by ~8:50&nbsp;AM (avg. delay: 21m).</div>
+            <span class="sol-benefit">Saves up to 1.5 hrs/day</span>
+            <span class="sol-stat">56706 On-Time: 33% &middot; 56705 On-Time: 37% (3M)</span>
+          </div>
+        </div>
+        <div class="sol-card">
+          <div class="sol-num">02</div>
+          <div class="sol-body">
+            <div class="sol-route">16304 VANCHINAD EXP &middot; Trivandrum Central &rarr; Ernakulam Jn</div>
+            <div class="sol-title">Add a brief halt at Mayyanad</div>
+            <div class="sol-desc">Reaches the area around 6:47&nbsp;PM. Same Paravur-Lake constraint applies, so a direct Mayyanad halt is what actually serves this catchment (avg. delay at Paravur: 19m).</div>
+            <span class="sol-benefit">Reliable, faster alternative</span>
+            <span class="sol-stat">On-Time: 35.6% (3M) &middot; Avg Delay: 19m</span>
+          </div>
+        </div>
+        <div class="sol-card">
+          <div class="sol-num">03</div>
+          <div class="sol-body">
+            <div class="sol-route">16342 GURUVAYUR EXP &middot; Trivandrum Central &rarr; Guruvayur</div>
+            <div class="sol-title">Add a halt at Kazhakuttam (already stops at Mayyanad)</div>
+            <div class="sol-desc">This train already halts at Mayyanad around 6:18&nbsp;PM &mdash; adding a Kazhakuttam stop would let Technopark employees board it directly. Feasibility is backed by its exceptional **96.7% on-time record** passing through Kazhakuttam.</div>
+            <span class="sol-benefit">No new infra needed</span>
+            <span class="sol-stat-blue">Highly Feasible: 96.7% On-Time (3M)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="signup">
+        <div class="section-label">Add Your Name</div>
+        <h2>A petition signed by 150 commuters is harder to ignore than one letter</h2>
+        <p>Every signature strengthens the case when we follow up with the MP's office, Southern Railway, and the Ministry of Railways. It takes under a minute.</p>
+        <div class="signup-actions">
+          <a class="btn btn-primary" href="https://forms.gle/REPLACE-WITH-YOUR-GOOGLE-FORM-LINK" target="_blank" rel="noopener">Open the Sign-Up Form &rarr;</a>
+        </div>
+        <div class="quick-support">
+          <button class="btn btn-ghost" id="quickSupportBtn2" style="padding:9px 16px; font-size:12px;">Quick show of support</button>
+          <span>(not a substitute for the form above &mdash; this is just a visible pulse-check)</span>
+        </div>
+        <p class="privacy-note">Names and contact numbers are collected only through the linked sign-up form, which is accessible solely to the Association's organisers. They will be shared with railway authorities only as an aggregate count and, where individuals consent, as a signed annexure to the representation.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div>
+        <div class="assoc">Mayyanad Railway Passengers' Association</div>
+        <div style="margin-top:6px;">Convenor: Jassim S &middot; Mayyanad, Kollam District, Kerala</div>
+      </div>
+      <div class="src">Delay data compiled from Indian Railways running status records (via running-history tracking) for Train 56304, report generated 15 Feb 2026. *Man-hours estimate based on ~150 regular commuters losing ~1.5 hrs/day, conservative figure.</div>
+    </div>
+  </footer>
+
+<script>
+  // ---- CONFIGURATION ----
+  // Replace this placeholder link with your actual Google Form URL once created
+  const GOOGLE_FORM_LINK = 'https://forms.gle/REPLACE-WITH-YOUR-GOOGLE-FORM-LINK';
+
+  // Automatically configure all petition links
+  document.querySelectorAll('a[id="petitionLink"], a[href*="REPLACE-WITH-YOUR-GOOGLE-FORM-LINK"]').forEach(link => {
+    link.href = GOOGLE_FORM_LINK;
+    link.addEventListener('click', (e) => {
+      if (GOOGLE_FORM_LINK.includes('REPLACE-WITH-YOUR-GOOGLE-FORM-LINK')) {
+        e.preventDefault();
+        alert('This campaign site is in preview mode. The petition sign-up form will be linked soon. In the meantime, please show your support by clicking the "I Support This" button!');
+      }
+    });
+  });
+
+  // ---- Split-flap header rotation ----
+  const flapMessages = ['23% ON TIME', 'AVG DELAY 23 MIN', 'MAX DELAY 68 MIN', '150+ COMMUTERS HIT'];
+  let flapIdx = 0;
+  const flapEl = document.getElementById('flapText');
+  setInterval(() => {
+    flapEl.classList.add('swap');
+    setTimeout(() => {
+      flapIdx = (flapIdx + 1) % flapMessages.length;
+      flapEl.textContent = flapMessages[flapIdx];
+      flapEl.classList.remove('swap');
+    }, 250);
+  }, 2600);
+
+  // ---- Shared supporter counter (backed by a Netlify Function + Blobs) ----
+  let currentCount = 0;
+  let hasSupportedThisSession = false;
+
+  async function loadCount() {
+    try {
+      const res = await fetch('/api/support');
+      if (!res.ok) throw new Error('bad response');
+      const data = await res.json();
+      return data.count || 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  function renderCount(n) {
+    document.getElementById('supporterCount').textContent = n.toLocaleString('en-IN');
+    document.getElementById('supporterLoading').style.display = 'none';
+    document.getElementById('supporterShown').style.display = 'inline';
+  }
+
+  async function initCount() {
+    currentCount = await loadCount();
+    renderCount(currentCount);
+  }
+  initCount();
+
+  async function addSupport(triggerBtn) {
+    if (hasSupportedThisSession) return;
+    hasSupportedThisSession = true;
+    document.querySelectorAll('#quickSupportBtn, #quickSupportBtn2').forEach(b => {
+      b.disabled = true;
+      b.textContent = 'Thanks for your support';
+    });
+    try {
+      const res = await fetch('/api/support', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        currentCount = data.count;
+        renderCount(currentCount);
+      }
+    } catch (e) {
+      console.error('Could not save support:', e);
+    }
+  }
+
+  document.getElementById('quickSupportBtn').addEventListener('click', () => addSupport());
+  document.getElementById('quickSupportBtn2').addEventListener('click', () => addSupport());
+</script>
+
+</body>
+</html>
