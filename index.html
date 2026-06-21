@@ -22,6 +22,7 @@
     --green:#3f8f5f;
   }
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--navy-deep);
@@ -498,7 +499,7 @@
       <div class="by">ORGANISED BY MAYYANAD RAILWAY PASSENGERS' ASSOCIATION</div>
 
       <div class="cta-row">
-        <a class="btn btn-primary" id="petitionLink" href="https://forms.gle/REPLACE-WITH-YOUR-GOOGLE-FORM-LINK" target="_blank" rel="noopener">Sign the Petition &rarr;</a>
+        <a class="btn btn-primary" id="petitionLink" href="#signup">Sign the Petition &rarr;</a>
         <button class="btn btn-ghost" id="quickSupportBtn">I Support This</button>
       </div>
 
@@ -515,8 +516,8 @@
 
       <div class="supporter-strip">
         <span class="pulse-dot"></span>
-        <span id="supporterLoading" style="margin-left: 6px;">Loading supporter count&hellip;</span>
-        <span id="supporterShown" style="display:none; margin-left: 6px;"><strong id="supporterCount">0</strong> commuters have shown support so far</span>
+        <span id="supporterLoading" style="margin-left: 6px;">Loading campaign metrics&hellip;</span>
+        <span id="supporterShown" style="display:none; margin-left: 6px;"><strong id="signaturesCount">0</strong> signed petition &middot; <strong id="supporterCount">0</strong> showing support</span>
       </div>
     </div>
   </header>
@@ -651,20 +652,42 @@
     </div>
   </section>
 
-  <section>
+  <section id="signup">
     <div class="wrap">
       <div class="signup">
         <div class="section-label">Add Your Name</div>
         <h2>A petition signed by 150 commuters is harder to ignore than one letter</h2>
         <p>Every signature strengthens the case when we follow up with the MP's office, Southern Railway, and the Ministry of Railways. It takes under a minute.</p>
-        <div class="signup-actions">
-          <a class="btn btn-primary" href="https://forms.gle/REPLACE-WITH-YOUR-GOOGLE-FORM-LINK" target="_blank" rel="noopener">Open the Sign-Up Form &rarr;</a>
+        
+        <form id="petitionForm" style="max-width:480px; margin-bottom:24px; display:grid; gap:16px;">
+          <div>
+            <label for="commuterName" style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Full Name (Required)</label>
+            <input type="text" id="commuterName" required placeholder="Enter your full name" style="width:100%; padding:10px 12px; border-radius:3px; border:1px solid rgba(255,255,255,0.25); background:rgba(0,0,0,0.25); color:#fff; font-family:inherit; font-size:14.5px;">
+          </div>
+          <div>
+            <label for="commuterPhone" style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Mobile Number (Optional, for credibility)</label>
+            <input type="tel" id="commuterPhone" placeholder="e.g. 9876543210" style="width:100%; padding:10px 12px; border-radius:3px; border:1px solid rgba(255,255,255,0.25); background:rgba(0,0,0,0.25); color:#fff; font-family:inherit; font-size:14.5px;">
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:10px; margin-top:4px;">
+            <input type="checkbox" id="commuterConfirm" required style="margin-top:4px; accent-color:var(--board-yellow); cursor:pointer;">
+            <label for="commuterConfirm" style="font-size:13.5px; color:var(--mist); cursor:pointer; user-select:none;">I support this representation for additional train stoppages at Mayyanad Railway Station.</label>
+          </div>
+          <button type="submit" id="submitPetitionBtn" class="btn btn-primary" style="justify-content:center; padding:12px 20px; font-size:14px; margin-top:4px;">Submit Signature &rarr;</button>
+        </form>
+
+        <div id="formSuccess" style="display:none; max-width:480px; background:rgba(63,143,95,0.15); border:1px solid var(--green); border-radius:4px; padding:16px 18px; margin-bottom:24px; color:#fff;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:20px; color:#4caf50;">✓</span>
+            <strong style="font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em;">Signature Submitted!</strong>
+          </div>
+          <p style="margin:8px 0 0; font-size:14px; color:var(--mist);">Thank you! Your signature has been recorded securely. We will share only aggregated statistics and signed lists with railway authorities.</p>
         </div>
+
         <div class="quick-support">
           <button class="btn btn-ghost" id="quickSupportBtn2" style="padding:9px 16px; font-size:12px;">Quick show of support</button>
           <span>(not a substitute for the form above &mdash; this is just a visible pulse-check)</span>
         </div>
-        <p class="privacy-note">Names and contact numbers are collected only through the linked sign-up form, which is accessible solely to the Association's organisers. They will be shared with railway authorities only as an aggregate count and, where individuals consent, as a signed annexure to the representation.</p>
+        <p class="privacy-note" style="margin-top:20px;">Names and contact numbers are collected directly through this form, which is accessible solely to the Association's organisers. They will be shared with railway authorities only as an aggregate count and, where individuals consent, as a signed annexure to the representation.</p>
       </div>
     </div>
   </section>
@@ -680,21 +703,6 @@
   </footer>
 
 <script>
-  // ---- CONFIGURATION ----
-  // Replace this placeholder link with your actual Google Form URL once created
-  const GOOGLE_FORM_LINK = 'https://forms.gle/REPLACE-WITH-YOUR-GOOGLE-FORM-LINK';
-
-  // Automatically configure all petition links
-  document.querySelectorAll('a[id="petitionLink"], a[href*="REPLACE-WITH-YOUR-GOOGLE-FORM-LINK"]').forEach(link => {
-    link.href = GOOGLE_FORM_LINK;
-    link.addEventListener('click', (e) => {
-      if (GOOGLE_FORM_LINK.includes('REPLACE-WITH-YOUR-GOOGLE-FORM-LINK')) {
-        e.preventDefault();
-        alert('This campaign site is in preview mode. The petition sign-up form will be linked soon. In the meantime, please show your support by clicking the "I Support This" button!');
-      }
-    });
-  });
-
   // ---- Split-flap header rotation ----
   const flapMessages = ['23% ON TIME', 'AVG DELAY 23 MIN', 'MAX DELAY 68 MIN', '150+ COMMUTERS HIT'];
   let flapIdx = 0;
@@ -708,34 +716,42 @@
     }, 250);
   }, 2600);
 
-  // ---- Shared supporter counter (backed by a Netlify Function + Blobs) ----
+  // ---- Shared supporter counter & signatures (backed by Netlify Function + Blobs) ----
   let currentCount = 0;
+  let signaturesCount = 0;
   let hasSupportedThisSession = false;
+  let hasSignedThisSession = false;
 
   async function loadCount() {
     try {
       const res = await fetch('/api/support');
       if (!res.ok) throw new Error('bad response');
       const data = await res.json();
-      return data.count || 0;
+      return {
+        count: data.count || 0,
+        signaturesCount: data.signaturesCount || 0
+      };
     } catch (e) {
-      return 0;
+      return { count: 0, signaturesCount: 0 };
     }
   }
 
-  function renderCount(n) {
+  function renderCount(n, s) {
     document.getElementById('supporterCount').textContent = n.toLocaleString('en-IN');
+    document.getElementById('signaturesCount').textContent = s.toLocaleString('en-IN');
     document.getElementById('supporterLoading').style.display = 'none';
     document.getElementById('supporterShown').style.display = 'inline';
   }
 
   async function initCount() {
-    currentCount = await loadCount();
-    renderCount(currentCount);
+    const data = await loadCount();
+    currentCount = data.count;
+    signaturesCount = data.signaturesCount;
+    renderCount(currentCount, signaturesCount);
   }
   initCount();
 
-  async function addSupport(triggerBtn) {
+  async function addSupport() {
     if (hasSupportedThisSession) return;
     hasSupportedThisSession = true;
     document.querySelectorAll('#quickSupportBtn, #quickSupportBtn2').forEach(b => {
@@ -743,11 +759,16 @@
       b.textContent = 'Thanks for your support';
     });
     try {
-      const res = await fetch('/api/support', { method: 'POST' });
+      const res = await fetch('/api/support', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'support' })
+      });
       if (res.ok) {
         const data = await res.json();
         currentCount = data.count;
-        renderCount(currentCount);
+        signaturesCount = data.signaturesCount;
+        renderCount(currentCount, signaturesCount);
       }
     } catch (e) {
       console.error('Could not save support:', e);
@@ -756,6 +777,60 @@
 
   document.getElementById('quickSupportBtn').addEventListener('click', () => addSupport());
   document.getElementById('quickSupportBtn2').addEventListener('click', () => addSupport());
+
+  // ---- Sign Petition Form Submission ----
+  const petitionForm = document.getElementById('petitionForm');
+  const formSuccess = document.getElementById('formSuccess');
+  const submitBtn = document.getElementById('submitPetitionBtn');
+
+  if (petitionForm) {
+    petitionForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (hasSignedThisSession) return;
+
+      const nameVal = document.getElementById('commuterName').value;
+      const phoneVal = document.getElementById('commuterPhone').value;
+      const confirmBox = document.getElementById('commuterConfirm').checked;
+
+      if (!nameVal || !confirmBox) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+
+      try {
+        const res = await fetch('/api/support', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'signature',
+            name: nameVal,
+            phone: phoneVal
+          })
+        });
+
+        if (res.ok) {
+          hasSignedThisSession = true;
+          const data = await res.json();
+          currentCount = data.count;
+          signaturesCount = data.signaturesCount;
+          renderCount(currentCount, signaturesCount);
+          
+          petitionForm.style.display = 'none';
+          formSuccess.style.display = 'block';
+        } else {
+          const errData = await res.json();
+          alert('Error submitting signature: ' + (errData.error || 'Unknown error'));
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Signature →';
+        }
+      } catch (err) {
+        console.error('Could not submit signature:', err);
+        alert('Error submitting signature. Please check your connection.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Signature →';
+      }
+    });
+  }
 
   // ---- Personal Delay Impact Calculator ----
   const slider = document.getElementById('delaySlider');
