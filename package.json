@@ -1,0 +1,13 @@
+{
+  "name": "mayyanad-railway-campaign",
+  "version": "1.0.0",
+  "description": "Campaign site for Mayyanad Railway Passengers' Association",
+  "main": "index.html",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.1",
+    "@netlify/functions": "^2.6.0"
+  },
+  "scripts": {
+    "dev": "netlify dev"
+  }
+}
