@@ -24,6 +24,40 @@
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   html,body{margin:0;padding:0;}
+  
+  /* Language Switcher Styling */
+  html[lang="ml"] .lang-en { display: none !important; }
+  html[lang="en"] .lang-ml { display: none !important; }
+  
+  .lang-switcher {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    display: inline-flex;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 3px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 100;
+  }
+  .lang-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: transparent;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+  .lang-btn.active {
+    background: var(--board-yellow);
+    color: #000;
+  }
+
   body{
     background:var(--navy-deep);
     color:var(--paper);
@@ -483,8 +517,16 @@
 <body>
 
   <header class="hero">
-    <div class="wrap">
-      <div class="eyebrow">PUBLIC REPRESENTATION CAMPAIGN &middot; KOLLAM, KERALA</div>
+    <div class="wrap" style="position: relative;">
+      <div class="lang-switcher">
+        <button id="langEnBtn" class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button id="langMlBtn" class="lang-btn" onclick="setLang('ml')">മലയാളം</button>
+      </div>
+
+      <div class="eyebrow">
+        <span class="lang-en">PUBLIC REPRESENTATION CAMPAIGN &middot; KOLLAM, KERALA</span>
+        <span class="lang-ml">പൊതു നിവേദന കാമ്പയിൻ &middot; കൊല്ലം, കേരളം</span>
+      </div>
 
       <div class="nameboard">
         <span class="code">MYY</span>
@@ -494,13 +536,28 @@
         </span>
       </div>
 
-      <h1>One ride home<br>shouldn't take <span>three hours.</span></h1>
-      <p class="sub">We're a group of daily commuters between Mayyanad and Kazhakuttam, organising to request additional train stoppages from Southern Railway and the Ministry of Railways &mdash; backed by real running-time data, not just complaints.</p>
-      <div class="by">ORGANISED BY MAYYANAD RAILWAY PASSENGERS' ASSOCIATION</div>
+      <h1>
+        <span class="lang-en">One ride home<br>shouldn't take <span>three hours.</span></span>
+        <span class="lang-ml">ഒരു വീട്ടിലേക്കുള്ള യാത്രയ്ക്ക്<br><span>3 മണിക്കൂർ</span> എടുക്കരുത്.</span>
+      </h1>
+      <p class="sub">
+        <span class="lang-en">We're a group of daily commuters between Mayyanad and Kazhakuttam, organising to request additional train stoppages from Southern Railway and the Ministry of Railways &mdash; backed by real running-time data, not just complaints.</span>
+        <span class="lang-ml">മയ്യനാടിനും കഴക്കൂട്ടത്തിനും ഇടയിൽ യാത്ര ചെയ്യുന്ന ദിനബത്തേരികളുടെ കൂട്ടായ്മയാണ് ഞങ്ങൾ. വെറും പരാതികൾക്കപ്പുറം ട്രെയിനുകളുടെ കൃത്യസമയ വിവരങ്ങൾ അടിസ്ഥാനമാക്കി റെയിൽവേ മന്ത്രാലയത്തോടും സതേൺ റെയിൽവേയോടും അധിക സ്റ്റോപ്പുകൾ ആവശ്യപ്പെടുന്നു.</span>
+      </p>
+      <div class="by">
+        <span class="lang-en">ORGANISED BY MAYYANAD RAILWAY PASSENGERS' ASSOCIATION</span>
+        <span class="lang-ml">മയ്യനാട് റെയിൽവേ പാസഞ്ചേഴ്സ് അസോസിയേഷൻ സംഘടിപ്പിക്കുന്നത്</span>
+      </div>
 
       <div class="cta-row">
-        <a class="btn btn-primary" id="petitionLink" href="#signup">Sign the Petition &rarr;</a>
-        <button class="btn btn-ghost" id="quickSupportBtn">I Support This</button>
+        <a class="btn btn-primary" id="petitionLink" href="#signup">
+          <span class="lang-en">Sign the Petition &rarr;</span>
+          <span class="lang-ml">ഹർജിയിൽ ഒപ്പിടുക &rarr;</span>
+        </a>
+        <button class="btn btn-ghost" id="quickSupportBtn">
+          <span class="lang-en">I Support This</span>
+          <span class="lang-ml">ഞാനും പിന്തുണയ്ക്കുന്നു</span>
+        </button>
       </div>
 
       <div class="board">
@@ -516,37 +573,103 @@
 
       <div class="supporter-strip">
         <span class="pulse-dot"></span>
-        <span id="supporterLoading" style="margin-left: 6px;">Loading campaign metrics&hellip;</span>
-        <span id="supporterShown" style="display:none; margin-left: 6px;"><strong id="signaturesCount">0</strong> signed petition &middot; <strong id="supporterCount">0</strong> showing support</span>
+        <span id="supporterLoading" style="margin-left: 6px;">
+          <span class="lang-en">Loading campaign metrics&hellip;</span>
+          <span class="lang-ml">വിവരങ്ങൾ ശേഖരിക്കുന്നു&hellip;</span>
+        </span>
+        <span id="supporterShown" style="display:none; margin-left: 6px;">
+          <span class="lang-en"><strong class="js-signaturesCount">0</strong> signed petition &middot; <strong class="js-supporterCount">0</strong> showing support</span>
+          <span class="lang-ml"><strong class="js-signaturesCount">0</strong> പേർ ഹർജിയിൽ ഒപ്പിട്ടു &middot; <strong class="js-supporterCount">0</strong> പേർ പിന്തുണ അറിയിച്ചു</span>
+        </span>
       </div>
     </div>
   </header>
 
   <section>
     <div class="wrap">
-      <div class="section-label">The Problem</div>
-      <h2 class="section-title">The only practical evening train rarely keeps its schedule</h2>
-      <p class="section-intro">Train 56304 (TVC&ndash;QLN Passenger) is scheduled into Mayyanad at 7:23&nbsp;PM &mdash; the main evening return option for Technopark employees. Here's how it's actually performed, based on official running status data compiled through February&nbsp;2026.</p>
+      <div class="section-label">
+        <span class="lang-en">The Problem</span>
+        <span class="lang-ml">പ്രശ്നം</span>
+      </div>
+      <h2 class="section-title">
+        <span class="lang-en">The only practical evening train rarely keeps its schedule</span>
+        <span class="lang-ml">ഏക ആശ്രയമായ വൈകുന്നേരത്തെ ട്രെയിൻ ഒട്ടും കൃത്യത പാലിക്കുന്നില്ല</span>
+      </h2>
+      <p class="section-intro">
+        <span class="lang-en">Train 56304 (TVC&ndash;QLN Passenger) is scheduled into Mayyanad at 7:23&nbsp;PM &mdash; the main evening return option for Technopark employees. Here's how it's actually performed, based on official running status data compiled through February&nbsp;2026.</span>
+        <span class="lang-ml">ടെക്നോപാർക്ക് ജീവനക്കാരുടെ പ്രധാന മടക്കയാത്ര ട്രെയിനായ 56304 (TVC&ndash;QLN പാസഞ്ചർ) വൈകുന്നേരം 7:23-നാണ് മയ്യനാട് എത്തേണ്ടത്. എന്നാൽ റെയിൽവേയുടെ ഔദ്യോഗിക വിവരങ്ങൾ അനുസരിച്ച് ഈ ട്രെയിൻ യഥാർത്ഥത്തിൽ ഓടിയത് താഴെ നൽകുന്നു (ഫെബ്രുവരി 2026 വരെയുള്ള വിവരങ്ങൾ).</span>
+      </p>
 
       <div class="stat-grid">
-        <div class="stat-card"><div class="num">36%</div><div class="lbl">On-time, last 6 months</div></div>
-        <div class="stat-card"><div class="num">20&ndash;27 min</div><div class="lbl">Average delay</div></div>
-        <div class="stat-card"><div class="num">68 min</div><div class="lbl">Worst recorded delay</div></div>
-        <div class="stat-card"><div class="num">~4,950</div><div class="lbl">Man-hours lost monthly*</div></div>
+        <div class="stat-card">
+          <div class="num">36%</div>
+          <div class="lbl">
+            <span class="lang-en">On-time, last 6 months</span>
+            <span class="lang-ml">കൃത്യസമയത്ത് (കഴിഞ്ഞ 6 മാസം)</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="num">20&ndash;27 min</div>
+          <div class="lbl">
+            <span class="lang-en">Average delay</span>
+            <span class="lang-ml">ശരാശരി വൈകുന്നത്</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="num">68 min</div>
+          <div class="lbl">
+            <span class="lang-en">Worst recorded delay</span>
+            <span class="lang-ml">ഏറ്റവും വലിയ വൈകൽ</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="num">~4,950</div>
+          <div class="lbl">
+            <span class="lang-en">Man-hours lost monthly*</span>
+            <span class="lang-ml">നഷ്ടപ്പെടുന്ന തൊഴിൽ സമയം (പ്രതിമാസം)*</span>
+          </div>
+        </div>
       </div>
 
       <table class="compare-table">
         <thead>
-          <tr><th>Period</th><th>On-Time (0&ndash;15 min)</th><th>Slight Delay (15&ndash;60 min)</th><th>Avg Delay</th><th>Max Delay</th></tr>
+          <tr>
+            <th><span class="lang-en">Period</span><span class="lang-ml">കാലയളവ്</span></th>
+            <th><span class="lang-en">On-Time (0&ndash;15 min)</span><span class="lang-ml">കൃത്യസമയത്ത് (0-15 മി)</span></th>
+            <th><span class="lang-en">Slight Delay (15&ndash;60 min)</span><span class="lang-ml">വൈകിയത് (15-60 മി)</span></th>
+            <th><span class="lang-en">Avg Delay</span><span class="lang-ml">ശരാശരി വൈകൽ</span></th>
+            <th><span class="lang-en">Max Delay</span><span class="lang-ml">പരമാവധി വൈകൽ</span></th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>This Month</td><td class="num">23.33% (7/30)</td><td class="num">76.67% (23/30)</td><td class="num">27 min</td><td class="num">60 min</td></tr>
-          <tr><td>Last 3 Months</td><td class="num">27.78% (25/90)</td><td class="num">72.22% (65/90)</td><td class="num">23 min</td><td class="num">60 min</td></tr>
-          <tr><td>Last 6 Months</td><td class="num">36.11% (65/180)</td><td class="num">63.33% (114/180)</td><td class="num">20 min</td><td class="num">68 min</td></tr>
+          <tr>
+            <td><span class="lang-en">This Month</span><span class="lang-ml">ഈ മാസം</span></td>
+            <td class="num">23.33% (7/30)</td>
+            <td class="num">76.67% (23/30)</td>
+            <td class="num">27 min</td>
+            <td class="num">60 min</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">Last 3 Months</span><span class="lang-ml">കഴിഞ്ഞ 3 മാസം</span></td>
+            <td class="num">27.78% (25/90)</td>
+            <td class="num">72.22% (65/90)</td>
+            <td class="num">23 min</td>
+            <td class="num">60 min</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">Last 6 Months</span><span class="lang-ml">കഴിഞ്ഞ 6 മാസം</span></td>
+            <td class="num">36.11% (65/180)</td>
+            <td class="num">63.33% (114/180)</td>
+            <td class="num">20 min</td>
+            <td class="num">68 min</td>
+          </tr>
         </tbody>
       </table>
       <div style="margin-top:20px; text-align:right;">
-        <a href="delay_report.md" style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--board-yellow); text-decoration:underline;">View Full Punctuality Report for All Trains &rarr;</a>
+        <a href="delay_report.md" style="font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--board-yellow); text-decoration:underline;">
+          <span class="lang-en">View Full Punctuality Report for All Trains &rarr;</span>
+          <span class="lang-ml">എല്ലാ ട്രെയിനുകളുടെയും വിശദമായ സമയ റിപ്പോർട്ട് കാണുക &rarr;</span>
+        </a>
       </div>
     </div>
   </section>
@@ -555,14 +678,35 @@
     <div class="wrap">
       <div class="impact-grid">
         <div>
-          <div class="section-label">Who This Affects</div>
-          <h2 class="section-title" style="color:#fff;">Hundreds of working families, every single evening</h2>
-          <p>Most employees finish work at Kazhakuttam around 5:30&nbsp;PM. With no earlier stoppage and a train that's late more often than not, commuters routinely reach home at or after 8:00&nbsp;PM &mdash; turning a short hop into a near three-hour ordeal.</p>
+          <div class="section-label">
+            <span class="lang-en">Who This Affects</span>
+            <span class="lang-ml">ഇത് ആരെ ബാധിക്കുന്നു</span>
+          </div>
+          <h2 class="section-title" style="color:#fff;">
+            <span class="lang-en">Hundreds of working families, every single evening</span>
+            <span class="lang-ml">നൂറുകണക്കിന് യാത്രക്കാരും അവരുടെ കുടുംബങ്ങളും</span>
+          </h2>
+          <p>
+            <span class="lang-en">Most employees finish work at Kazhakuttam around 5:30&nbsp;PM. With no earlier stoppage and a train that's late more often than not, commuters routinely reach home at or after 8:00&nbsp;PM &mdash; turning a short hop into a near three-hour ordeal.</span>
+            <span class="lang-ml">ടെക്നോപാർക്കിലെ ജോലി കഴിഞ്ഞ് മിക്കവരും 5:30-ഓടെ കഴക്കൂട്ടത്ത് എത്തും. എന്നാൽ മയ്യനാട് സ്റ്റോപ്പുള്ള അടുത്ത ട്രെയിൻ നിരന്തരം വൈകുന്നതിനാൽ ഭൂരിഭാഗം പേരും രാത്രി 8 മണിക്ക് ശേഷമാണ് വീട്ടിലെത്തുന്നത്. ചുരുങ്ങിയ സമയത്തെ യാത്ര മൂന്ന് മണിക്കൂർ ദുരിതമായി മാറുന്നു.</span>
+          </p>
           <ul class="impact-list">
-            <li>Reduced productivity the next working day</li>
-            <li>Less time with family, especially for parents of young children</li>
-            <li>Physical fatigue from consistently long travel days</li>
-            <li>No real alternative: road routes via Paravur involve a 10&ndash;16&nbsp;km detour with no direct bus link</li>
+            <li>
+              <span class="lang-en">Reduced productivity the next working day</span>
+              <span class="lang-ml">പിറ്റേന്നത്തെ ജോലിയെ ബാധിക്കുന്ന ശാരീരിക ബുദ്ധിമുട്ടുകൾ</span>
+            </li>
+            <li>
+              <span class="lang-en">Less time with family, especially for parents of young children</span>
+              <span class="lang-ml">കുടുംബത്തോടൊപ്പം ചിലവഴിക്കാൻ സമയം ലഭിക്കുന്നില്ല (പ്രത്യേകിച്ച് ചെറിയ കുട്ടികളുള്ള മാതാപിതാക്കൾക്ക്)</span>
+            </li>
+            <li>
+              <span class="lang-en">Physical fatigue from consistently long travel days</span>
+              <span class="lang-ml">നിരന്തരമായ യാത്ര മൂലമുണ്ടാകുന്ന കടുത്ത ശാരീരിക ക്ഷീണം</span>
+            </li>
+            <li>
+              <span class="lang-en">No real alternative: road routes via Paravur involve a 10&ndash;16&nbsp;km detour with no direct bus link</span>
+              <span class="lang-ml">മറ്റു വഴികളില്ല: റോഡ് മാർഗ്ഗം പരവൂർ കായൽ ചുറ്റി 10-16 കി.മീ കൂടുതൽ സഞ്ചരിക്കണം, നേരിട്ട് ബസ് സർവീസുമില്ല</span>
+            </li>
           </ul>
         </div>
         <div class="impact-card" style="display:flex; flex-direction:column; gap:20px;">
@@ -571,7 +715,10 @@
               <span class="big" style="font-size:36px; line-height:1; font-weight:700; color:var(--board-yellow); font-family:'JetBrains Mono',monospace;">150+</span>
               <span style="font-size:11px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; font-family:'JetBrains Mono',monospace;">Fact &middot; 01</span>
             </div>
-            <div class="cap" style="font-size:12.5px; color:var(--mist); margin-top:4px;">Estimated regular daily commuters from Mayyanad</div>
+            <div class="cap" style="font-size:12.5px; color:var(--mist); margin-top:4px;">
+              <span class="lang-en">Estimated regular daily commuters from Mayyanad</span>
+              <span class="lang-ml">പ്രതിദിന യാത്രക്കാർ (കണക്കാക്കുന്നത്)</span>
+            </div>
           </div>
           
           <div style="border-top:1px dashed rgba(255,255,255,0.15); padding-top:16px;">
@@ -579,12 +726,21 @@
               <span class="big" style="font-size:36px; line-height:1; font-weight:700; color:var(--board-yellow); font-family:'JetBrains Mono',monospace;">1.5 hrs</span>
               <span style="font-size:11px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; font-family:'JetBrains Mono',monospace;">Fact &middot; 02</span>
             </div>
-            <div class="cap" style="font-size:12.5px; color:var(--mist); margin-top:4px;">Average daily time lost per commuter</div>
+            <div class="cap" style="font-size:12.5px; color:var(--mist); margin-top:4px;">
+              <span class="lang-en">Average daily time lost per commuter</span>
+              <span class="lang-ml">ദിവസേന നഷ്ടപ്പെടുന്ന ശരാശരി സമയം</span>
+            </div>
           </div>
 
           <div style="border-top:1px dashed rgba(255,255,255,0.15); padding-top:16px;">
-            <div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; color:#fff; margin-bottom:12px; letter-spacing:0.03em;">Personal Delay Calculator</div>
-            <label style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Your daily delay (one-way):</label>
+            <div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; color:#fff; margin-bottom:12px; letter-spacing:0.03em;">
+              <span class="lang-en">Personal Delay Calculator</span>
+              <span class="lang-ml">വ്യക്തിഗത സമയ നഷ്ട കണക്കുകൂട്ടൽ</span>
+            </div>
+            <label style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">
+              <span class="lang-en">Your daily delay (one-way):</span>
+              <span class="lang-ml">നിങ്ങളുടെ ദിവസേനയുള്ള വൈകൽ (ഒരു വശം):</span>
+            </label>
             <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
               <input type="range" id="delaySlider" min="10" max="90" step="5" value="45" style="width:100%; accent-color:var(--board-yellow); cursor:pointer;">
               <span id="delayVal" style="font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700; color:var(--board-yellow); min-width:4ch;">45m</span>
@@ -593,18 +749,28 @@
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
               <div style="background:rgba(0,0,0,0.2); padding:8px 10px; border-radius:3px;">
                 <span class="mono" id="lostHoursMonth" style="font-size:20px; font-weight:700; color:#fff; display:block; line-height:1.2;">16.5 hrs</span>
-                <span style="font-size:9.5px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; letter-spacing:0.02em;">Lost / Month</span>
+                <span style="font-size:9.5px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; letter-spacing:0.02em;">
+                  <span class="lang-en">Lost / Month</span>
+                  <span class="lang-ml">നഷ്ടം / മാസം</span>
+                </span>
               </div>
               <div style="background:rgba(0,0,0,0.2); padding:8px 10px; border-radius:3px;">
                 <span class="mono" id="lostDaysYear" style="font-size:20px; font-weight:700; color:#fff; display:block; line-height:1.2;">10.3 days</span>
-                <span style="font-size:9.5px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; letter-spacing:0.02em;">Waking Days / Yr*</span>
+                <span style="font-size:9.5px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; letter-spacing:0.02em;">
+                  <span class="lang-en">Waking Days / Yr*</span>
+                  <span class="lang-ml">ഉണർന്നിരിക്കുന്ന ദിവസങ്ങൾ / വർഷം*</span>
+                </span>
               </div>
             </div>
             
             <div style="font-size:12.5px; color:var(--mist); background:rgba(0,0,0,0.25); padding:10px 12px; border-radius:4px; border-left:3px solid var(--board-yellow); line-height:1.45;">
-              Equivalent to <span id="equivalentBooks" style="color:var(--board-yellow); font-weight:600;">33 books</span> read or <span id="equivalentSleep" style="color:var(--board-yellow); font-weight:600;">21 nights</span> of sleep.
+              <span class="lang-en">Equivalent to <span id="equivalentBooks" style="color:var(--board-yellow); font-weight:600;">33 books</span> read or <span id="equivalentSleep" style="color:var(--board-yellow); font-weight:600;">21 nights</span> of sleep.</span>
+              <span class="lang-ml">ഇത് <span id="equivalentBooksMl" style="color:var(--board-yellow); font-weight:600;">33 പുസ്തകം</span> വായിക്കുന്നതിനോ <span id="equivalentSleepMl" style="color:var(--board-yellow); font-weight:600;">21 രാത്രി</span> ഉറങ്ങുന്നതിനോ തുല്യമാണ്.</span>
             </div>
-            <div style="font-size:9.5px; color:var(--mist-dim); margin-top:6px; font-style:italic;">*Based on 220 working days/year and 16 waking hours/day.</div>
+            <div style="font-size:9.5px; color:var(--mist-dim); margin-top:6px; font-style:italic;">
+              <span class="lang-en">*Based on 220 working days/year and 16 waking hours/day.</span>
+              <span class="lang-ml">*ഒരു വർഷത്തിൽ 220 പ്രവൃത്തിദിവസങ്ങളും ദിവസേന 16 ഉണർന്നിരിക്കുന്ന മണിക്കൂറുകളും കണക്കാക്കി.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -613,39 +779,84 @@
 
   <section style="padding-top:0;">
     <div class="wrap">
-      <div class="section-label">The Ask</div>
-      <h2 class="section-title" style="color:#fff;">Three concrete, operationally feasible stoppages</h2>
-      <p class="section-intro">None of these require new trains or major timetable changes &mdash; just a one-minute halt added to services already running on this stretch.</p>
+      <div class="section-label">
+        <span class="lang-en">The Ask</span>
+        <span class="lang-ml">ആവശ്യം</span>
+      </div>
+      <h2 class="section-title" style="color:#fff;">
+        <span class="lang-en">Three concrete, operationally feasible stoppages</span>
+        <span class="lang-ml">ലളിതമായി നടപ്പിലാക്കാവുന്ന 3 സ്റ്റോപ്പുകൾ</span>
+      </h2>
+      <p class="section-intro">
+        <span class="lang-en">None of these require new trains or major timetable changes &mdash; just a one-minute halt added to services already running on this stretch.</span>
+        <span class="lang-ml">ഇതിനായി പുതിയ ട്രെയിനുകളോ സമയക്രമത്തിൽ വലിയ മാറ്റങ്ങളോ ആവശ്യമില്ല — നിലവിൽ ഓടിക്കൊണ്ടിരിക്കുന്ന ട്രെയിനുകൾക്ക് 1 മിനിറ്റ് സ്റ്റോപ്പ് അനുവദിച്ചാൽ മാത്രം മതി.</span>
+      </p>
 
       <div class="solutions">
         <div class="sol-card">
           <div class="sol-num">01</div>
           <div class="sol-body">
             <div class="sol-route">56706 CAPE&ndash;PUU PASSENGER &middot; Kanyakumari &rarr; Punalur (+ return 56705)</div>
-            <div class="sol-title">Stop at Mayyanad instead of only Paravur</div>
-            <div class="sol-desc">Paravur and Mayyanad are separated by Paravur Lake with no direct bus link, so the existing halt doesn't help. A Mayyanad stop would get commuters home by ~6:30&nbsp;PM (56706 avg. delay: 22m), and the morning return (56705) would reach Kazhakuttam by ~8:50&nbsp;AM (avg. delay: 21m).</div>
-            <span class="sol-benefit">Saves up to 1.5 hrs/day</span>
-            <span class="sol-stat">56706 On-Time: 33% &middot; 56705 On-Time: 37% (3M)</span>
+            <div class="sol-title">
+              <span class="lang-en">Stop at Mayyanad instead of only Paravur</span>
+              <span class="lang-ml">പരവൂരിന് പുറമെ മയ്യനാടും സ്റ്റോപ്പ് അനുവദിക്കുക</span>
+            </div>
+            <div class="sol-desc">
+              <span class="lang-en">Paravur and Mayyanad are separated by Paravur Lake with no direct bus link, so the existing halt doesn't help. A Mayyanad stop would get commuters home by ~6:30&nbsp;PM (56706 avg. delay: 22m), and the morning return (56705) would reach Kazhakuttam by ~8:50&nbsp;AM (avg. delay: 21m).</span>
+              <span class="lang-ml">പരവൂരും മയ്യനാടും പരവൂർ കായലിനാൽ വേർതിരിക്കപ്പെട്ടിരിക്കുന്നതിനാൽ പരവൂരിലെ സ്റ്റോപ്പ് ഇവിടെയുള്ളവർക്ക് പ്രയോജനപ്പെടുന്നില്ല. മയ്യനാട് സ്റ്റോപ്പ് നൽകിയാൽ വൈകിട്ട് 6:30-ഓടെ നാട്ടിലെത്താം (56706 ശരാശരി വൈകൽ: 22 മി.). രാവിലെ 56705 ട്രെയിൻ വഴി 8:50-ഓടെ കഴക്കൂട്ടത്തും എത്താം.</span>
+            </div>
+            <span class="sol-benefit">
+              <span class="lang-en">Saves up to 1.5 hrs/day</span>
+              <span class="lang-ml">പ്രതിദിനം 1.5 മണിക്കൂർ വരെ ലാഭിക്കാം</span>
+            </span>
+            <span class="sol-stat">
+              <span class="lang-en">56706 On-Time: 33% &middot; 56705 On-Time: 37% (3M)</span>
+              <span class="lang-ml">56706 കൃത്യത: 33% &middot; 56705 കൃത്യത: 37% (3M)</span>
+            </span>
           </div>
         </div>
         <div class="sol-card">
           <div class="sol-num">02</div>
           <div class="sol-body">
             <div class="sol-route">16304 VANCHINAD EXP &middot; Trivandrum Central &rarr; Ernakulam Jn</div>
-            <div class="sol-title">Add a brief halt at Mayyanad</div>
-            <div class="sol-desc">Reaches the area around 6:47&nbsp;PM. Same Paravur-Lake constraint applies, so a direct Mayyanad halt is what actually serves this catchment (avg. delay at Paravur: 19m).</div>
-            <span class="sol-benefit">Reliable, faster alternative</span>
-            <span class="sol-stat">On-Time: 35.6% (3M) &middot; Avg Delay: 19m</span>
+            <div class="sol-title">
+              <span class="lang-en">Add a brief halt at Mayyanad</span>
+              <span class="lang-ml">മയ്യനാട് ഒരു മിനിറ്റ് സ്റ്റോപ്പ് അനുവദിക്കുക</span>
+            </div>
+            <div class="sol-desc">
+              <span class="lang-en">Reaches the area around 6:47&nbsp;PM. Same Paravur-Lake constraint applies, so a direct Mayyanad halt is what actually serves this catchment (avg. delay at Paravur: 19m).</span>
+              <span class="lang-ml">വൈകിട്ട് 6:47-ഓടെ ട്രെയിൻ മയ്യനാട് പരിസരത്ത് എത്തും. കായൽ കടമ്പയുള്ളതിനാൽ മയ്യനാട് സ്റ്റോപ്പ് അനുവദിച്ചാൽ മാത്രമേ നാട്ടുകാർക്ക് ഇത് പ്രയോജനപ്പെടൂ (ശരാശരി വൈകൽ: 19 മി.).</span>
+            </div>
+            <span class="sol-benefit">
+              <span class="lang-en">Reliable, faster alternative</span>
+              <span class="lang-ml">വേഗതയേറിയതും വിശ്വസിക്കാവുന്നതുമായ മാർഗ്ഗം</span>
+            </span>
+            <span class="sol-stat">
+              <span class="lang-en">On-Time: 35.6% (3M) &middot; Avg Delay: 19m</span>
+              <span class="lang-ml">സമയകൃത്യത: 35.6% &middot; ശരാശരി വൈകൽ: 19 മി (3M)</span>
+            </span>
           </div>
         </div>
         <div class="sol-card">
           <div class="sol-num">03</div>
           <div class="sol-body">
             <div class="sol-route">16342 GURUVAYUR EXP &middot; Trivandrum Central &rarr; Guruvayur</div>
-            <div class="sol-title">Add a halt at Kazhakuttam (already stops at Mayyanad)</div>
-            <div class="sol-desc">This train already halts at Mayyanad around 6:18&nbsp;PM &mdash; adding a Kazhakuttam stop would let Technopark employees board it directly. Feasibility is backed by its exceptional **96.7% on-time record** passing through Kazhakuttam.</div>
-            <span class="sol-benefit">No new infra needed</span>
-            <span class="sol-stat-blue">Highly Feasible: 96.7% On-Time (3M)</span>
+            <div class="sol-title">
+              <span class="lang-en">Add a halt at Kazhakuttam (already stops at Mayyanad)</span>
+              <span class="lang-ml">കഴക്കൂട്ടത്ത് സ്റ്റോപ്പ് അനുവദിക്കുക (മയ്യനാട് സ്റ്റോപ്പ് ഉണ്ട്)</span>
+            </div>
+            <div class="sol-desc">
+              <span class="lang-en">This train already halts at Mayyanad around 6:18&nbsp;PM &mdash; adding a Kazhakuttam stop would let Technopark employees board it directly. Feasibility is backed by its exceptional **96.7% on-time record** passing through Kazhakuttam.</span>
+              <span class="lang-ml">ഈ ട്രെയിൻ വൈകിട്ട് 6:18-ന് മയ്യനാട് നിർത്തുന്നുണ്ട്. കഴക്കൂട്ടത്ത് കൂടി സ്റ്റോപ്പ് അനുവദിച്ചാൽ ജീവനക്കാർക്ക് നേരിട്ട് കയറാം. കഴക്കൂട്ടം കടന്നുപോകുമ്പോൾ ഈ ട്രെയിനിന് 96.7% സമയകൃത്യത ഉള്ളതിനാൽ ഇത് തികച്ചും പ്രായോഗികമാണ്.</span>
+            </div>
+            <span class="sol-benefit">
+              <span class="lang-en">No new infra needed</span>
+              <span class="lang-ml">പുതിയ സംവിധാനങ്ങൾ ആവശ്യമില്ല</span>
+            </span>
+            <span class="sol-stat-blue">
+              <span class="lang-en">Highly Feasible: 96.7% On-Time (3M)</span>
+              <span class="lang-ml">തികച്ചും പ്രായോഗികം: 96.7% സമയകൃത്യത (3M)</span>
+            </span>
           </div>
         </div>
       </div>
@@ -655,39 +866,75 @@
   <section id="signup">
     <div class="wrap">
       <div class="signup">
-        <div class="section-label">Add Your Name</div>
-        <h2>A petition signed by 150 commuters is harder to ignore than one letter</h2>
-        <p>Every signature strengthens the case when we follow up with the MP's office, Southern Railway, and the Ministry of Railways. It takes under a minute.</p>
+        <div class="section-label">
+          <span class="lang-en">Add Your Name</span>
+          <span class="lang-ml">നിങ്ങളുടെ പേര് ചേർക്കുക</span>
+        </div>
+        <h2>
+          <span class="lang-en">A petition signed by 150 commuters is harder to ignore than one letter</span>
+          <span class="lang-ml">150 യാത്രക്കാർ ഒപ്പിട്ട ഹർജി അധികാരികൾക്ക് അവഗണിക്കാൻ കഴിയില്ല</span>
+        </h2>
+        <p>
+          <span class="lang-en">Every signature strengthens the case when we follow up with the MP's office, Southern Railway, and the Ministry of Railways. It takes under a minute.</span>
+          <span class="lang-ml">നാം നൽകുന്ന ഓരോ ഒപ്പും അധികാരികൾക്ക് മേൽ സമ്മർദ്ദം കൂട്ടും. ഇതിനായി ഒരു മിനിറ്റിൽ താഴെ സമയം മാത്രം മതി.</span>
+        </p>
         
         <form id="petitionForm" style="max-width:480px; margin-bottom:24px; display:grid; gap:16px;">
           <div>
-            <label for="commuterName" style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Full Name (Required)</label>
+            <label for="commuterName" style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">
+              <span class="lang-en">Full Name (Required)</span>
+              <span class="lang-ml">മുഴുവൻ പേര് (നിർബന്ധം)</span>
+            </label>
             <input type="text" id="commuterName" required placeholder="Enter your full name" style="width:100%; padding:10px 12px; border-radius:3px; border:1px solid rgba(255,255,255,0.25); background:rgba(0,0,0,0.25); color:#fff; font-family:inherit; font-size:14.5px;">
           </div>
           <div>
-            <label for="commuterPhone" style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Mobile Number (Optional, for credibility)</label>
+            <label for="commuterPhone" style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">
+              <span class="lang-en">Mobile Number (Optional, for credibility)</span>
+              <span class="lang-ml">മൊബൈൽ നമ്പർ (നിർബന്ധമില്ല, വിശ്വാസ്യതയ്ക്ക്)</span>
+            </label>
             <input type="tel" id="commuterPhone" placeholder="e.g. 9876543210" style="width:100%; padding:10px 12px; border-radius:3px; border:1px solid rgba(255,255,255,0.25); background:rgba(0,0,0,0.25); color:#fff; font-family:inherit; font-size:14.5px;">
           </div>
           <div style="display:flex; align-items:flex-start; gap:10px; margin-top:4px;">
             <input type="checkbox" id="commuterConfirm" required style="margin-top:4px; accent-color:var(--board-yellow); cursor:pointer;">
-            <label for="commuterConfirm" style="font-size:13.5px; color:var(--mist); cursor:pointer; user-select:none;">I support this representation for additional train stoppages at Mayyanad Railway Station.</label>
+            <label for="commuterConfirm" style="font-size:13.5px; color:var(--mist); cursor:pointer; user-select:none;">
+              <span class="lang-en">I support this representation for additional train stoppages at Mayyanad Railway Station.</span>
+              <span class="lang-ml">മയ്യനാട് റെയിൽവേ സ്റ്റേഷനിൽ അധിക സ്റ്റോപ്പുകൾ അനുവദിക്കണമെന്ന ഈ ആവശ്യത്തെ ഞാൻ പിന്തുണയ്ക്കുന്നു.</span>
+            </label>
           </div>
-          <button type="submit" id="submitPetitionBtn" class="btn btn-primary" style="justify-content:center; padding:12px 20px; font-size:14px; margin-top:4px;">Submit Signature &rarr;</button>
+          <button type="submit" id="submitPetitionBtn" class="btn btn-primary" style="justify-content:center; padding:12px 20px; font-size:14px; margin-top:4px;">
+            <span class="lang-en">Submit Signature &rarr;</span>
+            <span class="lang-ml">ഒപ്പ് രേഖപ്പെടുത്തുക &rarr;</span>
+          </button>
         </form>
 
         <div id="formSuccess" style="display:none; max-width:480px; background:rgba(63,143,95,0.15); border:1px solid var(--green); border-radius:4px; padding:16px 18px; margin-bottom:24px; color:#fff;">
           <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:20px; color:#4caf50;">✓</span>
-            <strong style="font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em;">Signature Submitted!</strong>
+            <strong style="font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em;">
+              <span class="lang-en">Signature Submitted!</span>
+              <span class="lang-ml">ഒപ്പ് വിജയകരമായി സമർപ്പിച്ചു!</span>
+            </strong>
           </div>
-          <p style="margin:8px 0 0; font-size:14px; color:var(--mist);">Thank you! Your signature has been recorded securely. We will share only aggregated statistics and signed lists with railway authorities.</p>
+          <p style="margin:8px 0 0; font-size:14px; color:var(--mist);">
+            <span class="lang-en">Thank you! Your signature has been recorded securely. We will share only aggregated statistics and signed lists with railway authorities.</span>
+            <span class="lang-ml">നന്ദി! നിങ്ങളുടെ ഒപ്പ് വിജയകരമായി രേഖപ്പെടുത്തി. വിവരങ്ങൾ പൂർണ്ണമായും സുരക്ഷിതമായിരിക്കും.</span>
+          </p>
         </div>
 
         <div class="quick-support">
-          <button class="btn btn-ghost" id="quickSupportBtn2" style="padding:9px 16px; font-size:12px;">Quick show of support</button>
-          <span>(not a substitute for the form above &mdash; this is just a visible pulse-check)</span>
+          <button class="btn btn-ghost" id="quickSupportBtn2" style="padding:9px 16px; font-size:12px;">
+            <span class="lang-en">Quick show of support</span>
+            <span class="lang-ml">ഞാനും പിന്തുണയ്ക്കുന്നു</span>
+          </button>
+          <span style="margin-left:4px;">
+            <span class="lang-en">(not a substitute for the form above &mdash; this is just a visible pulse-check)</span>
+            <span class="lang-ml">(ഇത് മുകളിലെ ഒപ്പിന് പകരമല്ല, പിന്തുണ അറിയിക്കാൻ മാത്രം)</span>
+          </span>
         </div>
-        <p class="privacy-note" style="margin-top:20px;">Names and contact numbers are collected directly through this form, which is accessible solely to the Association's organisers. They will be shared with railway authorities only as an aggregate count and, where individuals consent, as a signed annexure to the representation.</p>
+        <p class="privacy-note" style="margin-top:20px;">
+          <span class="lang-en">Names and contact numbers are collected directly through this form, which is accessible solely to the Association's organisers. They will be shared with railway authorities only as an aggregate count and, where individuals consent, as a signed annexure to the representation.</span>
+          <span class="lang-ml">വിവരങ്ങൾ അസോസിയേഷൻ സംഘാടകർക്ക് മാത്രമേ ലഭ്യമാകൂ. റെയിൽവേ അധികാരികൾക്ക് നിവേദനത്തിന്റെ ഭാഗമായി മാത്രമേ ഇത് സമർപ്പിക്കൂ.</span>
+        </p>
       </div>
     </div>
   </section>
@@ -695,16 +942,27 @@
   <footer>
     <div class="wrap">
       <div>
-        <div class="assoc">Mayyanad Railway Passengers' Association</div>
-        <div style="margin-top:6px;">Convenor: Jassim S &middot; Mayyanad, Kollam District, Kerala</div>
+        <div class="assoc">
+          <span class="lang-en">Mayyanad Railway Passengers' Association</span>
+          <span class="lang-ml">മയ്യനാട് റെയിൽവേ പാസഞ്ചേഴ്സ് അസോസിയേഷൻ</span>
+        </div>
+        <div style="margin-top:6px;">
+          <span class="lang-en">Convenor: Jassim S &middot; Mayyanad, Kollam District, Kerala</span>
+          <span class="lang-ml">കൺവീനർ: ജാസിം എസ് &middot; മയ്യനാട്, കൊല്ലം ജില്ല, കേരളം</span>
+        </div>
       </div>
-      <div class="src">Delay data compiled from Indian Railways running status records (via running-history tracking) for Train 56304, report generated 15 Feb 2026. *Man-hours estimate based on ~150 regular commuters losing ~1.5 hrs/day, conservative figure.</div>
+      <div class="src">
+        <span class="lang-en">Delay data compiled from Indian Railways running status records (via running-history tracking) for Train 56304, report generated 15 Feb 2026. *Man-hours estimate based on ~150 regular commuters losing ~1.5 hrs/day, conservative figure.</span>
+        <span class="lang-ml">ട്രെയിൻ 56304-ന്റെ ഇന്ത്യൻ റെയിൽവേ റണ്ണിംഗ് സ്റ്റാറ്റസ് വിവരങ്ങളെ അടിസ്ഥാനമാക്കി തയ്യാറാക്കിയ റിപ്പോർട്ട് (15 ഫെബ്രുവരി 2026). *ഏകദേശം 150 സ്ഥിരം യാത്രക്കാർക്ക് പ്രതിദിനം 1.5 മണിക്കൂർ വീതം നഷ്ടപ്പെടുന്നു എന്ന യാഥാർത്ഥ്യത്തെ അടിസ്ഥാനമാക്കിയാണ് നഷ്ടപ്പെടുന്ന തൊഴിൽ സമയം കണക്കാക്കിയിട്ടുള്ളത്.</span>
+      </div>
     </div>
   </footer>
 
 <script>
   // ---- Split-flap header rotation ----
-  const flapMessages = ['23% ON TIME', 'AVG DELAY 23 MIN', 'MAX DELAY 68 MIN', '150+ COMMUTERS HIT'];
+  const enFlaps = ['23% ON TIME', 'AVG DELAY 23 MIN', 'MAX DELAY 68 MIN', '150+ COMMUTERS HIT'];
+  const mlFlaps = ['23% കൃത്യത', 'വൈകൽ: 23 മി.', 'പരമാവധി: 68 മി.', '150+ പേരെ ബാധിച്ചു'];
+  let flapMessages = enFlaps;
   let flapIdx = 0;
   const flapEl = document.getElementById('flapText');
   setInterval(() => {
@@ -715,6 +973,23 @@
       flapEl.classList.remove('swap');
     }, 250);
   }, 2600);
+
+  // ---- Language Switcher ----
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    if (lang === 'en') {
+      document.getElementById('langEnBtn').classList.add('active');
+    } else {
+      document.getElementById('langMlBtn').classList.add('active');
+    }
+    // Update flap messages language
+    flapMessages = lang === 'en' ? enFlaps : mlFlaps;
+    flapEl.textContent = flapMessages[flapIdx];
+  }
+  window.setLang = setLang; // Expose globally for onclick
 
   // ---- Shared supporter counter & signatures (backed by Netlify Function + Blobs) ----
   let currentCount = 0;
@@ -737,8 +1012,8 @@
   }
 
   function renderCount(n, s) {
-    document.getElementById('supporterCount').textContent = n.toLocaleString('en-IN');
-    document.getElementById('signaturesCount').textContent = s.toLocaleString('en-IN');
+    document.querySelectorAll('.js-supporterCount').forEach(el => el.textContent = n.toLocaleString('en-IN'));
+    document.querySelectorAll('.js-signaturesCount').forEach(el => el.textContent = s.toLocaleString('en-IN'));
     document.getElementById('supporterLoading').style.display = 'none';
     document.getElementById('supporterShown').style.display = 'inline';
   }
@@ -860,6 +1135,8 @@
     
     equivalentBooks.textContent = books + ' books';
     equivalentSleep.textContent = sleepNights + ' nights';
+    document.getElementById('equivalentBooksMl').textContent = books + ' പുസ്തകം';
+    document.getElementById('equivalentSleepMl').textContent = sleepNights + ' രാത്രി';
   }
 
   if (slider) {
