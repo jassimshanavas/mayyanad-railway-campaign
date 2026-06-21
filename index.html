@@ -412,6 +412,71 @@
   }
   footer .assoc{font-family:'Oswald',sans-serif; color:var(--mist); letter-spacing:0.03em; text-transform:uppercase; font-size:14px;}
   footer .src{max-width:46ch; line-height:1.5;}
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--navy-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--navy-soft);
+    border-radius: 4px;
+    border: 1px solid var(--navy-deep);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--board-yellow);
+  }
+
+  /* Enhancements for cards and hover states */
+  .btn-primary:hover {
+    box-shadow: 0 6px 0 var(--board-yellow-deep);
+    transform: translateY(-2px);
+  }
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-1px);
+  }
+  .sol-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .sol-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--board-yellow);
+  }
+  .stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Pulse Dot Animation */
+  .pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    position: relative;
+  }
+  .pulse-dot::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.6s infinite ease-in-out;
+    opacity: 0.8;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2.8); opacity: 0; }
+  }
 </style>
 </head>
 <body>
@@ -449,8 +514,9 @@
       </div>
 
       <div class="supporter-strip">
-        <span id="supporterLoading">Loading supporter count&hellip;</span>
-        <span id="supporterShown" style="display:none;"><strong id="supporterCount">0</strong> commuters have shown support so far</span>
+        <span class="pulse-dot"></span>
+        <span id="supporterLoading" style="margin-left: 6px;">Loading supporter count&hellip;</span>
+        <span id="supporterShown" style="display:none; margin-left: 6px;"><strong id="supporterCount">0</strong> commuters have shown support so far</span>
       </div>
     </div>
   </header>
@@ -498,11 +564,47 @@
             <li>No real alternative: road routes via Paravur involve a 10&ndash;16&nbsp;km detour with no direct bus link</li>
           </ul>
         </div>
-        <div class="impact-card">
-          <div class="big">150+</div>
-          <div class="cap">Estimated regular daily commuters</div>
-          <div class="big" style="margin-top:18px;">1.5 hrs</div>
-          <div class="cap">Average daily time lost, per commuter</div>
+        <div class="impact-card" style="display:flex; flex-direction:column; gap:20px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <span class="big" style="font-size:36px; line-height:1; font-weight:700; color:var(--board-yellow); font-family:'JetBrains Mono',monospace;">150+</span>
+              <span style="font-size:11px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; font-family:'JetBrains Mono',monospace;">Fact &middot; 01</span>
+            </div>
+            <div class="cap" style="font-size:12.5px; color:var(--mist); margin-top:4px;">Estimated regular daily commuters from Mayyanad</div>
+          </div>
+          
+          <div style="border-top:1px dashed rgba(255,255,255,0.15); padding-top:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <span class="big" style="font-size:36px; line-height:1; font-weight:700; color:var(--board-yellow); font-family:'JetBrains Mono',monospace;">1.5 hrs</span>
+              <span style="font-size:11px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; font-family:'JetBrains Mono',monospace;">Fact &middot; 02</span>
+            </div>
+            <div class="cap" style="font-size:12.5px; color:var(--mist); margin-top:4px;">Average daily time lost per commuter</div>
+          </div>
+
+          <div style="border-top:1px dashed rgba(255,255,255,0.15); padding-top:16px;">
+            <div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; color:#fff; margin-bottom:12px; letter-spacing:0.03em;">Personal Delay Calculator</div>
+            <label style="font-size:12px; color:var(--mist-dim); text-transform:uppercase; display:block; margin-bottom:6px; font-family:'JetBrains Mono',monospace;">Your daily delay (one-way):</label>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <input type="range" id="delaySlider" min="10" max="90" step="5" value="45" style="width:100%; accent-color:var(--board-yellow); cursor:pointer;">
+              <span id="delayVal" style="font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700; color:var(--board-yellow); min-width:4ch;">45m</span>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+              <div style="background:rgba(0,0,0,0.2); padding:8px 10px; border-radius:3px;">
+                <span class="mono" id="lostHoursMonth" style="font-size:20px; font-weight:700; color:#fff; display:block; line-height:1.2;">16.5 hrs</span>
+                <span style="font-size:9.5px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; letter-spacing:0.02em;">Lost / Month</span>
+              </div>
+              <div style="background:rgba(0,0,0,0.2); padding:8px 10px; border-radius:3px;">
+                <span class="mono" id="lostDaysYear" style="font-size:20px; font-weight:700; color:#fff; display:block; line-height:1.2;">10.3 days</span>
+                <span style="font-size:9.5px; color:var(--mist-dim); text-transform:uppercase; font-weight:600; letter-spacing:0.02em;">Waking Days / Yr*</span>
+              </div>
+            </div>
+            
+            <div style="font-size:12.5px; color:var(--mist); background:rgba(0,0,0,0.25); padding:10px 12px; border-radius:4px; border-left:3px solid var(--board-yellow); line-height:1.45;">
+              Equivalent to <span id="equivalentBooks" style="color:var(--board-yellow); font-weight:600;">33 books</span> read or <span id="equivalentSleep" style="color:var(--board-yellow); font-weight:600;">21 nights</span> of sleep.
+            </div>
+            <div style="font-size:9.5px; color:var(--mist-dim); margin-top:6px; font-style:italic;">*Based on 220 working days/year and 16 waking hours/day.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -654,6 +756,41 @@
 
   document.getElementById('quickSupportBtn').addEventListener('click', () => addSupport());
   document.getElementById('quickSupportBtn2').addEventListener('click', () => addSupport());
+
+  // ---- Personal Delay Impact Calculator ----
+  const slider = document.getElementById('delaySlider');
+  const delayVal = document.getElementById('delayVal');
+  const lostHoursMonth = document.getElementById('lostHoursMonth');
+  const lostDaysYear = document.getElementById('lostDaysYear');
+  const equivalentBooks = document.getElementById('equivalentBooks');
+  const equivalentSleep = document.getElementById('equivalentSleep');
+
+  function updateCalculator() {
+    const delay = parseInt(slider.value);
+    delayVal.textContent = delay + 'm';
+    
+    // Monthly hours lost (22 working days/month)
+    const monthlyHours = (delay * 22) / 60;
+    lostHoursMonth.textContent = monthlyHours.toFixed(1) + ' hrs';
+    
+    // Yearly hours lost (220 working days/year)
+    const yearlyHours = (delay * 220) / 60;
+    // Waking days (16 waking hours per day)
+    const wakingDays = yearlyHours / 16;
+    lostDaysYear.textContent = wakingDays.toFixed(1) + ' days';
+    
+    // Equivalents
+    const books = Math.round(yearlyHours / 5); // 5 hours per book
+    const sleepNights = Math.round(yearlyHours / 8); // 8 hours per night of sleep
+    
+    equivalentBooks.textContent = books + ' books';
+    equivalentSleep.textContent = sleepNights + ' nights';
+  }
+
+  if (slider) {
+    slider.addEventListener('input', updateCalculator);
+    updateCalculator(); // Run once initially
+  }
 </script>
 
 </body>
